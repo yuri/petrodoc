@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="description" content="Petrodoc: Making Rockspecs, HTML and RSS from a single source"/>
+  <meta name="keywords" content="Lua, LuaRocks, rockspec, HTML, documentation, luadoc, rss"/>
+  <link rel="shortcut icon" href="http://media.freewisdom.org/etc/sputnik-icon.png"/>
+  <link rel="alternate" type="application/rss+xml" title="New releases of Petrodoc" href='http://spu.tnik.org/petrodoc/releases.rss'/>
+  <title>Petrodoc</title>
+  <style type="text/css">
+    body { color:#000; background:#fff; }
+    #header { width:100%;
+       text-align:center;  
+       border-top:solid #aaa 1px;
+       border-bottom:solid #aaa 1px;
+    }
+    #header p { margin-left:0; }
+    p { margin-left:3px; }
+    sup.return {font-size: small;}
+    a.return {text-decoration: none; color: gray;}
+    pre { background-color:#ffe; white-space:pre; padding-left:3ex; border-left: 1px solid gray; margin-left: 10px}
+
+    table.index { border: 1px #00007f; }
+    table.index td { text-align: left; vertical-align: top; }
+    table.index ul { padding-top: 0em; margin-top: 0em; }
+
+    table {
+     border: 1px solid black;
+	 border-collapse: collapse;
+     margin-left: auto;
+     margin-right: auto;
+    }
+    th {
+     border: 1px solid black;
+     padding: 0.5em;
+    }
+    td {
+     border: 1px solid black;
+     padding: 0.5em;
+    }
+    div.header, div.footer { margin-left: 0em; }
+  </style>
+</head>
+<body>
+ <div id="header">
+  <a name="top"></a>
+  <img border=0 alt="Petrodoc logo" src="http://sputnik.freewisdom.org/lib/petrodoc/petrodoc.png"/>
+  <p>Making Rockspecs, HTML and RSS from a single source</p>
+  <p>
+   <a name="toc"></a><a href="#Overview">Overview</a> &middot; <a href="#Installation">Installation</a> &middot; <a href="#Using Petrodoc">Using Petrodoc</a> &middot; <a href="#Contact">Contact</a> &middot; <a href="#License">License</a>
+  </p>
+ </div>
+ 
+
+<a name="Overview"></a><h1>Overview<sup class="return"><a class="return" href="#top">&uarr;</a></sup></h1>
+ Petrodoc allows you to use a single configuration file to generate a rockspec, 
+                HTML documentation (with Luadoc) and an RSS feed for new releases.
+
+
+<a name="Installation"></a><h1>Installation<sup class="return"><a class="return" href="#top">&uarr;</a></sup></h1>
+
+<p>  Petrodoc consists of a single file (petrodoc.lua).  Here is a list of recent
+  releases:</p>
+
+<p>  <ul>
+  <li><a href="http://spu.tnik.org/files/petrodoc-10.12.28.tar.gz">Petrodoc-10.12.28</a> - decoupled from Sputnik (Dec. 28, 2010) </li> <li><a href="http://spu.tnik.org/files/petrodoc-8.02.23.tar.gz">Petrodoc-8.02.23</a> - the first version (Feb. 23, 2008) </li> 
+  </ul></p>
+
+<p>  You can also install Petrodoc as a LuaRock from the repository at 
+  http://sputnik.freewisdom.org/rocks/galaxy/.</p>
+
+
+
+
+<a name="Using Petrodoc"></a><h1>Using Petrodoc<sup class="return"><a class="return" href="#top">&uarr;</a></sup></h1>
+
+
+<p>Petrodoc takes as input a single file that is similar to a LuaRocks rockspec
+but contains additional fields for generating documentation.</p>
+
+<p>For example, to generate documentation for <a href="http://spu.tnik.org/lib/xssfilter/">XSSFilter</a>,
+we would use the following petrodoc file:</p>
+
+<ul>
+    <li>https://github.com/yuri/lua-xssfilter/blob/master/petrodoc</li>
+</ul>
+
+<p>We would go into "lua-xssfilter" directory and run petrodoc.lua
+with "petrodoc" as the first argument.</p>
+
+<p>This would give us:</p>
+
+<ul>
+    <li>doc/index.html (see <a href="http://spu.tnik.org/lib/xssfilter/">XSSFilter</a>)</li>
+    <li>a release file like xssfilter-10.12.28.tar.gz</li>
+    <li>xssfilter-10.12.28-0.rockspec (a rockspec)</li>
+</ul>
+
+
+
+
+
+
+<a name="Contact"></a><h1>Contact<sup class="return"><a class="return" href="#top">&uarr;</a></sup></h1>
+
+<p>  For more information please contact the author, 
+  <a href="http://takhteyev.org/contact/">Yuri Takhteyev</a> or write to the 
+  <a href="http://sputnik.freewisdom.org/en/Mailing_List">Sputnik Mailing List</a>.</p>
+
+<p>  Comments are welcome! </p>
+
+
+
+
+<a name="License"></a><h1>License<sup class="return"><a class="return" href="#top">&uarr;</a></sup></h1>
+
+<p>Copyright (c) 2007, 2008 Yuri Takhteyev</p>
+
+<p>Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.</p>
+
+
+
+</body>
+</html>

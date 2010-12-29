@@ -55,7 +55,7 @@ Contact = [[
 TOC = {
    { "Overview",     detailed },
    { "Installation", markdown(Installation) },
-   --{ "Using Petrodoc", markdown(include("docs/howto.md")) },
+   { "Using Petrodoc", markdown(include("doc/howto.md")) },
    { "Contact",      markdown(Contact)},
    --{ "LuaDoc",       luadoc{"petrodoc.lua"} },
    { "License",      markdown(include("LICENSE.txt")) }

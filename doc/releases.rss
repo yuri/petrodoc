@@ -1,0 +1,20 @@
+<rss version="2.0">
+ <channel>
+  <title>Petrodoc</title>
+  <description/>
+   <link>http://spu.tnik.org/petrodoc/</link>
+     
+   <item>
+    <link>http://spu.tnik.org/files/petrodoc-$version.tar.gz</link>
+    <title>Petrodoc 10.12.28</title>
+    <guid isPermalink="true">http://spu.tnik.org/files/petrodoc-10.12.28.tar.gz</guid>
+    <description>decoupled from Sputnik</description>
+   </item>
+   <item>
+    <link>http://spu.tnik.org/files/petrodoc-$version.tar.gz</link>
+    <title>Petrodoc 8.02.23</title>
+    <guid isPermalink="true">http://spu.tnik.org/files/petrodoc-8.02.23.tar.gz</guid>
+    <description>the first version</description>
+   </item>
+ </channel>
+</rss>
