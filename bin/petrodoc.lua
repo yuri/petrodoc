@@ -158,8 +158,13 @@ $build}
 BUILD_TEMPLATE = [[
   type = "none",
   install = {
-     lua = {%s     }
+%s
   }
+]]
+
+MODULE_MAP_TEMPLATE = [[
+    %s = {
+%s    },
 ]]
 
 ---------------------------------------------------------------------------------------------------
@@ -225,11 +230,15 @@ end
 ---------------------------------------------------------------------------------------------------
 
 function make_module_map(dir, subtract)
-   local mode = lfs.attributes(dir).mode
+   local attributes = lfs.attributes(dir)
+   if not attributes then
+      return ""
+   end
+   local mode = attributes.mode
    if mode == "file" then
-      local path = string.gsub(dir, subtract, "")
+      local path = dir --string.gsub(dir, subtract, "")
       if string.match(path, "%.lua$") then
-         local mod = path:gsub("%.lua$", ""):gsub("%/", ".")
+         local mod = path:gsub(subtract, ""):gsub("%.lua$", ""):gsub("%/", ".")
          return string.format([=[        ["%s"] = "%s",]=], mod, path)
       end 
    elseif mode == "directory" then
@@ -287,9 +296,16 @@ function petrodoc(spec, revision, server)
                             cosmo.yield(spec)
                          end
                       end
+
+   local module_map = ""
+
    if not spec.build then 
-      spec.build = string.format(BUILD_TEMPLATE, make_module_map("lua", name:gsub("%-", "%%-").."/lua/"))
+      module_map = module_map..string.format(MODULE_MAP_TEMPLATE, "bin", make_module_map("bin", "bin/"))
+      module_map = module_map..string.format(MODULE_MAP_TEMPLATE, "lua", make_module_map("lua", "lua/"))
    end
+
+   spec.build = string.format(BUILD_TEMPLATE, module_map)
+
 
    -- generate the documentation page
    spec.body = ""
