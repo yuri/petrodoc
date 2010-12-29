@@ -8,7 +8,7 @@ require"markdown"
 require"cosmo"
 
 require"logging"
-require"logging.file"
+require"logging.console"
 
 
 --pcall("require", "luadoc")
@@ -171,7 +171,7 @@ function make_luadoc(modules)
       return "Luadoc is not installed"
    end
    lfs.chdir("lua")
-   local logger = logging.file("luadoc.log")
+   local logger = logging.console("[%level] %message\n")
    taglet.logger = logger
    luadoc.logger = logger
    assert(taglet.logger)
@@ -214,8 +214,7 @@ end
 ---------------------------------------------------------------------------------------------------
 
 function include(path)
-   print(lfs.currentdir())
-   print(path)
+   print("Reading: "..path)
    local f, x = io.open(path)
    return f:read("*all")
 end
@@ -231,7 +230,7 @@ function make_module_map(dir, subtract)
       local path = string.gsub(dir, subtract, "")
       if string.match(path, "%.lua$") then
          local mod = path:gsub("%.lua$", ""):gsub("%/", ".")
-         return string.format([=[        ["%s"] = "lua/%s",]=], mod, path)
+         return string.format([=[        ["%s"] = "%s",]=], mod, path)
       end 
    elseif mode == "directory" then
       local buffer = ""
@@ -250,7 +249,7 @@ end
 -- Does everything ("Main")
 ---------------------------------------------------------------------------------------------------
 
-function petrodoc(name, spec, revision, server)
+function petrodoc(spec, revision, server)
 
    -- fill in the default values
    spec.homepage = spec.homepage or ""
@@ -263,9 +262,11 @@ function petrodoc(name, spec, revision, server)
    spec.dependencies = spec.dependencies or ''
    spec.TOC      = spec.TOC or {}
 
+   local name = spec.package:lower()
+
    -- an auxiliary function to build file paths
    function fill_and_save(path, content)
-      print(path)
+      print("Writing: "..path)
       local f = io.open(path, "w")
       f:write(cosmo.fill(content, spec))
       f:close()
@@ -287,7 +288,7 @@ function petrodoc(name, spec, revision, server)
                          end
                       end
    if not spec.build then 
-      spec.build = string.format(BUILD_TEMPLATE, make_module_map(name.."/lua", name:gsub("%-", "%%-").."/lua/"))
+      spec.build = string.format(BUILD_TEMPLATE, make_module_map("lua", name:gsub("%-", "%%-").."/lua/"))
    end
 
    -- generate the documentation page
@@ -316,18 +317,21 @@ function petrodoc(name, spec, revision, server)
    spec.download_filled = cosmo.fill(spec.download, spec)
 
    if #spec.TOC > 0 then
-      fill_and_save(name.."/doc/index.html", HTML_TEMPLATE)
+      fill_and_save("doc/index.html", HTML_TEMPLATE)
    end
    if spec.rss:len() > 0 then
-      fill_and_save(name.."/doc/releases.rss", RSS)
+      fill_and_save("doc/releases.rss", RSS)
    end
 
    -- make a rockspec
-   fill_and_save(name.."/rockspec", ROCKSPEC_TEMPLATE)
+   fill_and_save("rockspec", ROCKSPEC_TEMPLATE)
 
    -- make a release
    local released_rock_dir = name.."-"..spec.last_version
-   os.execute("cp -r "..name.." "..released_rock_dir)
+   os.execute("mkdir "..released_rock_dir)
+   for i,v in ipairs{"lua", "bin", "README.txt", "LICENSE.txt"} do
+      os.execute("cp -r "..v.." "..released_rock_dir)
+   end
    os.execute("tar czvpf "..released_rock_dir..".tar.gz "..released_rock_dir)
 
    -- publish it
@@ -345,27 +349,27 @@ function petrodoc(name, spec, revision, server)
    fill_and_save(rockspec, ROCKSPEC_TEMPLATE)
    print(rockspec)
 
-   if spec.download:len() > 0 then
+   --[[if spec.download:len() > 0 then
       -- pack the rock
       luarocks.pack.run(rockspec)
       luarocks.build.run(rockspec)
       luarocks.make_manifest.run()
       luarocks.pack.run(name, spec.last_version.."-"..revision)
 
-   end
+   end]]
 
 end
 
 
-local cwd = lfs.currentdir()
-local rock = arg[1]
-lfs.chdir(rock)
-print(lfs.currentdir())
+--local cwd = lfs.currentdir()
+--local rock = arg[1]
+--lfs.chdir(rock)
+--print(lfs.currentdir())
 local petrofunc, err = loadfile("petrodoc")
 if not petrofunc then error(err) end
 local spec = getfenv(petrofunc())
-lfs.chdir(cwd)
+--lfs.chdir(cwd)
 
-petrodoc(rock, spec, arg[2] or "0")
+petrodoc(spec, arg[2] or "0")
 
 
